@@ -1,1 +1,322 @@
+/* Variables CSS para los colores */
+:root {
+    --color-background: #F5F5DC; /* Beige claro para el fondo (lino) */
+    --color-primary: #8BC34A; /* Verde matcha */
+    --color-secondary: #DDA0DD; /* Lila */
+    --color-tertiary: #FAFAD2; /* Amarillo muy claro */
+    --color-text: #36454F; /* Gris oscuro para el texto */
+    --color-approved: #A2D991; /* Verde más claro para ramos aprobados */
+    --color-blocked: #FFB6C1; /* Rosa claro para ramos bloqueados */
+    --color-border: #D2B48C; /* Marrón claro para bordes */
+}
 
+/* Estilos generales del cuerpo */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+    overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+/* Encabezado */
+header {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 2.5rem 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInDown 1s ease-out;
+}
+
+header h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2.8em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* Contenedor principal de la malla */
+#curriculum-grid {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los semestres se ajusten en varias filas en pantallas pequeñas */
+    justify-content: center;
+    gap: 25px; /* Espacio entre las columnas de semestres */
+    padding: 30px 20px;
+    max-width: 1400px;
+    margin: 30px auto;
+}
+
+/* Estilo para cada semestre */
+.semester {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    width: 100%; /* Por defecto, ocupa todo el ancho */
+    max-width: 300px; /* Ancho máximo para cada columna de semestre */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.semester:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.semester h2 {
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 3px solid var(--color-secondary);
+    padding-bottom: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.semester-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+/* Estilo para cada ramo */
+.course-item {
+    background-color: var(--color-tertiary); /* Amarillo muy claro */
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-align: center;
+    font-weight: 500;
+    color: var(--color-text);
+    word-wrap: break-word; /* Asegura que el texto largo se ajuste */
+}
+
+.course-item:hover:not(.approved):not(.blocked) {
+    background-color: #E6E6FA; /* Lila muy claro al pasar el ratón */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para ramo aprobado */
+.course-item.approved {
+    background-color: var(--color-approved); /* Verde más claro */
+    text-decoration: line-through;
+    color: #4CAF50; /* Verde más oscuro para el texto */
+    cursor: default;
+    opacity: 0.8;
+}
+
+/* Estilo para ramo bloqueado */
+.course-item.blocked {
+    background-color: var(--color-blocked); /* Rosa claro */
+    cursor: not-allowed;
+    opacity: 0.7;
+    position: relative;
+}
+
+.course-item.blocked::after {
+    content: '🔒'; /* Candado para indicar bloqueado */
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+}
+
+/* Mensajes motivacionales */
+.motivational-message {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: var(--color-secondary); /* Lila */
+    color: white;
+    border-radius: 12px;
+    font-size: 1.5em;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* Modal para mensajes de bloqueo */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija en la pantalla */
+    z-index: 1000; /* Siempre encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Habilitar scroll si el contenido es demasiado grande */
+    background-color: rgba(0,0,0,0.5); /* Fondo semitransparente oscuro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    animation: zoomIn 0.3s ease-out;
+}
+
+.close-button {
+    color: var(--color-text);
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--color-primary);
+}
+
+#modal-message {
+    font-size: 1.2em;
+    color: var(--color-text);
+    line-height: 1.5;
+}
+
+/* Animaciones */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 1200px) {
+    #curriculum-grid {
+        gap: 20px;
+        padding: 25px 15px;
+    }
+
+    .semester {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 992px) {
+    header h1 {
+        font-size: 2.2em;
+    }
+
+    header p {
+        font-size: 1em;
+    }
+
+    #curriculum-grid {
+        flex-direction: column; /* Apila los semestres en pantallas más pequeñas */
+        align-items: center;
+        padding: 20px 10px;
+    }
+
+    .semester {
+        max-width: 350px; /* Un poco más ancho en tabletas */
+        margin-bottom: 20px; /* Espacio entre semestres apilados */
+    }
+
+    .semester:last-child {
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .semester {
+        max-width: 90%; /* Ocupa casi todo el ancho disponible */
+        padding: 20px;
+    }
+
+    .semester h2 {
+        font-size: 1.6em;
+    }
+
+    .course-item {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+
+    .motivational-message {
+        font-size: 1.3em;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 2rem 0;
+    }
+    header h1 {
+        font-size: 1.8em;
+    }
+    header p {
+        font-size: 0.9em;
+    }
+    .semester {
+        padding: 15px;
+    }
+    .semester h2 {
+        font-size: 1.4em;
+    }
+    .course-item {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+    .modal-content {
+        padding: 20px;
+    }
+    #modal-message {
+        font-size: 1em;
+    }
+}
